@@ -4,9 +4,25 @@
    {{selectedService.attributes.Title}}
     <br/>
    {{selectedService.attributes.ActualDescription}}
+    <br/>
+    <br/>
+    <div class="grid">
+      <div class="col-1"></div>
+      <div class="col-4">
+        <label for="time24Debut"><b>Date début</b></label>
+        <br/>
+        <Calendar id="time24Debut" v-model="dateDebut" :showTime="true" :showSeconds="true" />
+      </div>
+
+      <div class="col-4">
+        <label for="time24Fin"><b>Date fin</b></label>
+        <br/>
+        <Calendar id="time24Fin" v-model="dateFin" :showTime="true" :showSeconds="true" />
+      </div>
+    </div>
   <template #header>
     <div>
-      <Button type="button" @click="Validation(selectedTodo.id)">Valider</Button> &nbsp; <span><b>Prix:</b> {{selectedService.attributes.Price}}</span>
+      <Button type="button" @click="Validation(selectedService)">Valider</Button> &nbsp; <span><b>Prix:</b> {{selectedService.attributes.Price}}</span>
     </div>
   </template>
 </Dialog>
@@ -18,10 +34,10 @@
           <h5>Planifiez votre evening en quelques clicks:</h5>
         </div>
         <div class="grid">
-          <div class="col-4" >
+          <!-- <div class="col-4" >
           <span>Type: <Dropdown v-model="selectedTypes" :options="Types" optionLabel="name" style="width:5rem"/></span>
-          </div>
-          <div class="col-8" >
+          </div> -->
+          <div class="col-12" >
             <span>
               <div class="p-inputgroup">
                     <InputText placeholder="Keyword" v-model="searchTerm"/>
@@ -89,6 +105,7 @@ import InputText from 'primevue/inputtext';
 import DataView from 'primevue/dataview';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
+import axios from 'axios';
 
 export default {
   name: 'Home',
@@ -134,6 +151,8 @@ export default {
           searchElements:[],
           showDialog:false,
           selectedService:{},
+          dateDebut:new Date(),
+          dateFin:new Date(),
 
         }
     },
@@ -143,6 +162,37 @@ export default {
       var ref=this;
       this.selectedService = service
       this.showDialog = true
+    },
+    Validation(service)
+    {
+      var ref=this;
+      debugger;
+      this.showDialog = false
+      var body = {data:{UserId:1,
+        OutcomeId:1,
+        StatusId:1,
+        Travel_Agency_Id:1,
+        Booking_Date:new Date(),
+        Booking_Details:"",
+        }}
+      axios.post('http://localhost:8010/api/bookings',body,{
+        'content-type': 'text/plain',
+        "Authorization": "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt
+      }).then(function(msg){
+        console.log(msg)
+        axios.post('http://localhost:8010/api/service-bookings',{data:{
+          serviceId:service.id,
+          BookingId:msg.id,
+          startDate:ref.dateDebut,
+          endDate:ref.dateFin,
+        }},{
+        'content-type': 'text/plain',
+        "Authorization": "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt
+          }).then(function(msg){
+            console.log(msg)
+          })
+      })
+
     }
   }
 }

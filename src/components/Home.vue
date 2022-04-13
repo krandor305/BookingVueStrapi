@@ -30,6 +30,7 @@ export default {
         return {
             items:[
             {label:'Accueil',icon:'pi pi-fw pi-home',name:"Accueil",to:"/"},
+            {label:'Scheduler',icon:'pi pi-fw pi-home',name:"Scheduler",to:"/Scheduler"},
             // {label:'Espace utilisateur',icon:'pi pi-fw pi-sitemap',name:"EspaceUtilisateur",to:"/EspaceUtilisateur"}
             ]
         }

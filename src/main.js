@@ -20,6 +20,7 @@ import MegaMenu from 'primevue/megamenu';
 import DropDown from 'primevue/dropdown';
 import Checkbox from 'primevue/checkbox';
 import Dialog from 'primevue/dialog';
+import Calendar from 'primevue/calendar';
 import ToastService from 'primevue/toastservice';
 
 window.$ = jquery
@@ -42,3 +43,4 @@ app.component('InputText',InputText)
 app.component('Checkbox',Checkbox)
 app.component('MegaMenu',MegaMenu)
 app.component('DropDown',DropDown)
+app.component('Calendar',Calendar)

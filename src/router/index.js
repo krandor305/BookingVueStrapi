@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/HomeContent.vue'
 import Login from '../views/Login'
 import EspaceUtilisateur from '../views/EspaceUtilisateur'
+import Scheduler from '../views/Scheduler'
 
 const routes = [
   {
@@ -18,6 +19,11 @@ const routes = [
     path: '/EspaceUtilisateur',
     name: 'EspaceUtilisateur',
     component: EspaceUtilisateur
+  },
+  {
+    path: '/Scheduler',
+    name: 'Scheduler',
+    component: Scheduler
   },
   {
     path: '/about',
