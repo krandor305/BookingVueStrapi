@@ -1,0 +1,19 @@
+https://madewithvuejs.com/vue-hotel-datepicker
+
+https://madewithvuejs.com/vue-cookieconsent
+
+pour notifications evenements:
+https://madewithvuejs.com/vue-marquee-text-component
+
+swippable cards:
+https://madewithvuejs.com/vue-swing
+https://madewithvuejs.com/swipeable-cards
+
+Card:
+    http://vusc.surge.sh/guide/components.html#skeletoncard
+
+feedback(rating):
+    https://madewithvuejs.com/vuefeedbackreaction
+
+Social:
+    Ajouter groupes entre booking-user et user

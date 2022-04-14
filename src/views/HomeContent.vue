@@ -29,25 +29,25 @@
 
  <div class="homeContent">
    <div class="grid">
-      <div class="col-4" style='background-color:white;padding:50px;margin:20px;height:50%;border-radius:75px;'>
-        <div class="col-12">
-          <h5>Planifiez votre evening en quelques clicks:</h5>
-        </div>
+      <div :class="'col-'+searchDiv" style='background-color:white;padding:50px;margin:20px;height:50%;border-radius:75px;transition: width 1s;'>
         <div class="grid">
           <!-- <div class="col-4" >
           <span>Type: <Dropdown v-model="selectedTypes" :options="Types" optionLabel="name" style="width:5rem"/></span>
           </div> -->
           <div class="col-12" >
             <span>
+              <b style="float:left">Planifiez votre evening en quelques clicks:</b>
+              <br/>
               <div class="p-inputgroup">
-                    <InputText placeholder="Keyword" v-model="searchTerm"/>
-                    <Button icon="pi pi-search" class="p-button-primary"/>
+                    <InputText placeholder="Keyword" v-model="searchTerm" style="height: 75px;"/>
                 </div>
             </span>
           </div>
         </div>
       </div>
-      <div class="col-7">
+      <Transition name="fade">
+      <div v-if="this.searchTerm && resultDiv!=false" :class="'col-'+resultDiv" style="transition: width 1s;">
+        <!-- {{resultDiv}} -->
         <DataView :value="searchElements" :paginator="true" :rows="3" style='background-color:white;'>
           <template #paginatorend>
             <Button type="button" icon="pi pi-search" />
@@ -78,6 +78,7 @@
         </DataView>
 
       </div>
+      </Transition>
    </div>
    <div class="grid grid-nogutter surface-section text-800">
     <div class="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
@@ -135,6 +136,34 @@ export default {
       ref.searchElements = d.data
     })
   },
+  computed:
+  {
+    searchDiv()
+    {
+      if(!this.searchTerm || this.searchTerm=="")
+      {
+        // this.resultDiv=false;
+        var ref = this;
+        ref.resultDiv = false;
+        setTimeout(function(){
+          ref.resultDiv = false;
+        },1*1000)
+        return 11;
+      }
+      else
+      {
+        var ref = this;
+        setTimeout(function(){
+          if(!this.searchTerm || this.searchTerm=="")
+          {
+            ref.resultDiv = 7;
+          }
+        },1*1000)
+        return 4;
+      }
+    },
+
+  },
   data() {
         return {
           selectedTypes: null,
@@ -153,6 +182,7 @@ export default {
           selectedService:{},
           dateDebut:new Date(),
           dateFin:new Date(),
+          resultDiv:false,
 
         }
     },
@@ -166,7 +196,6 @@ export default {
     Validation(service)
     {
       var ref=this;
-      debugger;
       this.showDialog = false
       var body = {data:{UserId:1,
         OutcomeId:1,
@@ -208,5 +237,15 @@ export default {
   .homeContent .p-card{
     box-shadow: 0 !important;
     border-radius: 0px !important;
+  }
+
+  .fade-enter-active,
+  .fade-leave-active {
+    transition: opacity 5s ease;
+  }
+
+  .fade-enter-from,
+  .fade-leave-to {
+    opacity: 0;
   }
 </style>
