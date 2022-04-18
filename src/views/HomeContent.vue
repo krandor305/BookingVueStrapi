@@ -197,28 +197,41 @@ export default {
     {
       var ref=this;
       this.showDialog = false
-      var body = {data:{UserId:1,
-        OutcomeId:1,
-        StatusId:1,
-        Travel_Agency_Id:1,
-        Booking_Date:new Date(),
-        Booking_Details:"",
-        }}
+
+      var body = {
+          data:{
+            UserId:1,
+            OutcomeId:1,
+            StatusId:1,
+            Travel_Agency_Id:1,
+            Booking_Date:new Date(),
+            Booking_Details:"",
+          }
+        }
+
       axios.post('http://localhost:8010/api/bookings',body,{
-        'content-type': 'text/plain',
-        "Authorization": "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt
+        headers:{
+          'content-type': 'text/plain',
+          "Authorization": "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt
+          }
       }).then(function(msg){
         console.log(msg)
-        axios.post('http://localhost:8010/api/service-bookings',{data:{
-          serviceId:service.id,
-          BookingId:msg.id,
-          startDate:ref.dateDebut,
-          endDate:ref.dateFin,
-        }},{
-        'content-type': 'text/plain',
-        "Authorization": "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt
+        debugger;
+        axios.post('http://localhost:8010/api/service-bookings',{
+          data:{
+            serviceId:service.id,
+            BookingId:msg.data.id,
+            startDate:ref.dateDebut,
+            endDate:ref.dateFin,
+          }
+        },{
+        headers:{
+            'content-type': 'text/plain',
+            "Authorization": "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt
+            }
           }).then(function(msg){
             console.log(msg)
+            alert("toast<success>")
           })
       })
 
