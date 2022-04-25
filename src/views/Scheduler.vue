@@ -3,16 +3,8 @@
 		{{bookings}}
 		<h1>My Calendar</h1>
 		   <div id="menu">
-				<span id="menu-navi">
-					<button type="button" class="btn btn-default btn-sm move-today" data-action="move-today">Today</button>
-					<button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">
-					<i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i>
-					</button>
-					<button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">
-					<i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>
-					</button>
-				</span>
-				<span id="renderRange" class="render-range"></span>
+				<Button icon="pi pi-arrow-left" class="p-button-rounded p-button-secondary" label="previous" @click="previousMonth"/>
+				<Button icon="pi pi-arrow-right" class="p-button-rounded p-button-secondary" label="next" @click="nextMonth"/>
 			</div>
 		<div id="calendar" style="height: 800px;"></div>
 	</div>
@@ -34,6 +26,7 @@
 				showDate: new Date(),
 				bookings:[], 
 				services:[],
+				actualDate:new Date(),
 				calendar:null
 			}
 		},
@@ -47,12 +40,28 @@
 			this.calendar = new Calendar('#calendar', {
 			defaultView: 'month',
 			// taskView: true,
+			 useCreationPopup: true,
+      		 useDetailPopup: true,
 			});
+			this.calendar.setOptions({month: {visibleWeeksCount: 6}}, true);
 			this.loadBookings()
 		},
 		components: {
 		},
 		methods: {
+			previousMonth(){
+				// var d = this.actualDate
+				// this.actualDate = new Date(d.setMonth(d.getMonth()-1))
+				// debugger;
+				// this.calendar.invoke('setDate', this.actualDate);
+				this.calendar.prev()
+			},
+			nextMonth(){
+				// var d = this.actualDate
+				// this.actualDate = new Date(d.setMonth(d.getMonth()+1))
+				// this.calendar.invoke('setDate', this.actualDate);
+				this.calendar.next()
+			},
 			setShowDate(d) {
 				this.showDate = d;
 			},
@@ -92,7 +101,7 @@
 											objService.attributes['start'] = new Date(d.startDate)
 											objService.attributes['end'] = new Date(d.endDate)
 											objService.attributes['title'] = objService.attributes.Title
-											debugger;
+											// debugger;
 											var returnObj = objService.attributes
 											returnObj['id'] = objService.id
 											return returnObj
@@ -109,7 +118,7 @@
 								})
 								// 
 
-								alert("toast<success>")
+								// alert("toast<success>")
 							})
 						})
 				})
