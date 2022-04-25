@@ -2,27 +2,30 @@
 	<div id="app">
 		{{bookings}}
 		<h1>My Calendar</h1>
-		<calendar-view
-			:show-date="showDate"
-			class="theme-default holiday-us-traditional holiday-us-official">
-			<template #header="{ headerProps }">
-				<calendar-view-header
-					:header-props="headerProps"
-					@input="setShowDate"
-					:items="bookings" />
-			</template>
-		</calendar-view>
+		   <div id="menu">
+				<span id="menu-navi">
+					<button type="button" class="btn btn-default btn-sm move-today" data-action="move-today">Today</button>
+					<button type="button" class="btn btn-default btn-sm move-day" data-action="move-prev">
+					<i class="calendar-icon ic-arrow-line-left" data-action="move-prev"></i>
+					</button>
+					<button type="button" class="btn btn-default btn-sm move-day" data-action="move-next">
+					<i class="calendar-icon ic-arrow-line-right" data-action="move-next"></i>
+					</button>
+				</span>
+				<span id="renderRange" class="render-range"></span>
+			</div>
+		<div id="calendar" style="height: 800px;"></div>
 	</div>
 </template>
 <script>
-	import { CalendarView, CalendarViewHeader } from "vue-simple-calendar"
-
-	import "vue-simple-calendar/dist/style.css"
-	// The next two lines are optional themes
-	import "vue-simple-calendar/static/css/default.css"
-	import "vue-simple-calendar/static/css/holidays-us.css"
 
 	import axios from 'axios';
+	import Calendar from 'tui-calendar'; /* ES6 */
+	import "tui-calendar/dist/tui-calendar.css";
+
+	// If you use the default popups, use this.
+	import 'tui-date-picker/dist/tui-date-picker.css';
+	import 'tui-time-picker/dist/tui-time-picker.css';
 
 	export default {
 		name: 'app',
@@ -30,15 +33,24 @@
 			return { 
 				showDate: new Date(),
 				bookings:[], 
-				services:[]
+				services:[],
+				calendar:null
+			}
+		},
+		watch:{
+			'bookings':function(newFlag){
+				this.calendar.createSchedules(newFlag);
 			}
 		},
 		mounted(){
+			
+			this.calendar = new Calendar('#calendar', {
+			defaultView: 'month',
+			// taskView: true,
+			});
 			this.loadBookings()
 		},
 		components: {
-			CalendarView,
-			CalendarViewHeader,
 		},
 		methods: {
 			setShowDate(d) {
@@ -54,7 +66,7 @@
 							},
 						}).then(function(bookings){
 							console.log(bookings)
-							debugger;
+							
 							$.ajax({url:'http://localhost:8010/api/service-bookings'
 								,beforeSend: function(request) {
 									request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt);
@@ -72,14 +84,18 @@
 										var objService = ref.services.find(function(service){
 											return service.id == parseInt(d.serviceId)
 										})
-										debugger;
+										
 										if(objService)
 										{
-											objService['startDate'] = new Date(d.startDate)
-											objService['endDate'] = new Date(d.endDate)
+											// objService.attributes['start'] = new Date(d.startDate)
+											// objService.attributes['endDate'] = new Date(d.endDate)
+											objService.attributes['start'] = new Date(d.startDate)
+											objService.attributes['end'] = new Date(d.endDate)
+											objService.attributes['title'] = objService.attributes.Title
+											debugger;
 											var returnObj = objService.attributes
 											returnObj['id'] = objService.id
-											return objService
+											return returnObj
 										}
 										else
 										{
@@ -90,7 +106,9 @@
 									{
 										return;
 									}
-							})
+								})
+								// 
+
 								alert("toast<success>")
 							})
 						})
