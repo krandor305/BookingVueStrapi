@@ -2,8 +2,12 @@
 	<div id="app">
 		{{bookings}}
 		<h1>My Calendar</h1>
-		   <div id="menu">
+		   <div id="menu" style="padding:20px">
+			   {{ calendar?(monthNames[new Date(calendar.getDate()).getMonth()]):"" }}
 				<Button icon="pi pi-arrow-left" class="p-button-rounded p-button-secondary" label="previous" @click="previousMonth"/>
+				&nbsp;
+				<Button icon="pi pi-home" class="p-button-rounded p-button-secondary" label="today" @click="calendar.today()"/>
+				&nbsp;
 				<Button icon="pi pi-arrow-right" class="p-button-rounded p-button-secondary" label="next" @click="nextMonth"/>
 			</div>
 		<div id="calendar" style="height: 800px;"></div>
@@ -27,12 +31,18 @@
 				bookings:[], 
 				services:[],
 				actualDate:new Date(),
-				calendar:null
+				calendar:null,
+				monthNames:["January", "February", "March", "April", "May", "June",
+				"July", "August", "September", "October", "November", "December"
+				]
+
 			}
 		},
 		watch:{
 			'bookings':function(newFlag){
-				this.calendar.createSchedules(newFlag);
+				this.calendar.clear()
+				this.calendar.createSchedules(newFlag,true);
+				console.log(this.calendar)
 			}
 		},
 		mounted(){
@@ -43,7 +53,6 @@
 			 useCreationPopup: true,
       		 useDetailPopup: true,
 			});
-			this.calendar.setOptions({month: {visibleWeeksCount: 6}}, true);
 			this.loadBookings()
 		},
 		components: {
@@ -104,6 +113,7 @@
 											// debugger;
 											var returnObj = objService.attributes
 											returnObj['id'] = objService.id
+											returnObj['category'] = 'time'
 											return returnObj
 										}
 										else
