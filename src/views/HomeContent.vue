@@ -1,5 +1,6 @@
 <template>
 
+  <Toast/>
  <Dialog v-model:visible="showDialog" :style="{width:'800px'}">
    {{selectedService.attributes.Title}}
     <br/>
@@ -36,7 +37,8 @@
           </div> -->
           <div class="col-12" >
             <span>
-              <b style="float:left">Planifiez votre evening en quelques clicks:</b>
+              <b style="float:left;font-size:30px">Planifiez votre evening en quelques clicks:</b>
+              <br/>
               <br/>
               <div class="p-inputgroup">
                     <InputText placeholder="Keyword" v-model="searchTerm" style="height: 75px;"/>
@@ -46,9 +48,9 @@
         </div>
       </div>
       <Transition name="fade">
-      <div v-if="this.searchTerm && resultDiv!=false" :class="'col-'+resultDiv" style="transition: width 1s;">
+      <div v-if="this.searchTerm && resultDiv!=false" :class="'col-'+resultDiv">
         <!-- {{resultDiv}} -->
-        <DataView :value="searchElements" :paginator="true" :rows="3" style='background-color:white;'>
+        <DataView :value="searchElements" :paginator="true" :rows="3" :style="'background-color:white;opacity:'+opacityResults">
           <template #paginatorend>
             <Button type="button" icon="pi pi-search" />
           </template>
@@ -83,12 +85,12 @@
    <div class="grid grid-nogutter surface-section text-800">
     <div class="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
         <section>
-            <span class="block text-6xl font-bold mb-1">Create the screens your</span>
-            <div class="text-6xl text-primary font-bold mb-3">your visitors deserve to see</div>
-            <p class="mt-0 mb-4 text-700 line-height-3">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
+            <span class="block text-6xl font-bold mb-1">Planifiez votre Week-end en toute sérénité</span>
+            <div class="text-6xl text-primary font-bold mb-3">Pour planifier votre journée,Inscrivez-vous au plus vite</div>
+            <p class="mt-0 mb-4 text-700 line-height-3">Notre equipe ne cesse d'accroitre son catalogue d'activités et de fonctionalités</p>
             
-            <Button label="Learn More" type="button" class="mr-3 p-button-raised"></Button>
-            <Button label="Live Demo" type="button" class="p-button-outlined"></Button>
+            <Button label="Inscription/Login" type="button" class="mr-3 p-button-raised" @click="$router.push('/Login')"></Button>
+            <Button label="Recherche d'activité" type="button" class="p-button-outlined" @click="scrollTop"></Button>
         </section>
     </div>
     <div class="col-12 md:col-6 overflow-hidden">
@@ -126,6 +128,14 @@ export default {
       ref.searchElements = ref.baseElements.filter(function(d){
         return d.attributes.Title.indexOf(newFlag)!=-1
       })
+    },
+    searchElements:function(newFlag)
+    {
+      var ref = this;
+      if(newFlag.length>0)
+      {
+        ref.opacityResults = 1
+      }
     }
   },
   mounted()
@@ -140,7 +150,7 @@ export default {
   {
     searchDiv()
     {
-      if(!this.searchTerm || this.searchTerm=="")
+      if(this.resultDiv == false && (!this.searchTerm || this.searchTerm==""))
       {
         // this.resultDiv=false;
         var ref = this;
@@ -154,7 +164,7 @@ export default {
       {
         var ref = this;
         setTimeout(function(){
-          if(!this.searchTerm || this.searchTerm=="")
+          if(ref.resultDiv == false && (!this.searchTerm || this.searchTerm==""))
           {
             ref.resultDiv = 7;
           }
@@ -183,6 +193,7 @@ export default {
           dateDebut:new Date(),
           dateFin:new Date(),
           resultDiv:false,
+          opacityResults:0,
 
         }
     },
@@ -192,6 +203,10 @@ export default {
       var ref=this;
       this.selectedService = service
       this.showDialog = true
+    },
+    scrollTop()
+    {
+      window.scrollTo(0,0)
     },
     Validation(service)
     {
@@ -231,7 +246,8 @@ export default {
             }
           }).then(function(msg){
             console.log(msg)
-            alert("toast<success>")
+            //alert("toast<success>")
+            ref.$toast.add({severity:'success', summary: 'Réservation envoyée'});
           })
       })
 
@@ -254,7 +270,7 @@ export default {
 
   .fade-enter-active,
   .fade-leave-active {
-    transition: opacity 5s ease;
+    transition: opacity 1s ease;
   }
 
   .fade-enter-from,

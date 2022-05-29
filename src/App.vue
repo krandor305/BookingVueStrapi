@@ -1,4 +1,5 @@
 <template>
+  <Toast />
   <Header/>
   <router-view/>
 </template>
@@ -6,6 +7,7 @@
 <script>
 // @ is an alias to /src
 import Header from './components/Home.vue'
+
 export default {
   name: 'Home',
   components: {

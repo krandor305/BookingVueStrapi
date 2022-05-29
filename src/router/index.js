@@ -1,6 +1,8 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import Home from '../views/HomeContent.vue'
 import Login from '../views/Login'
+import Register from '../views/Register'
+import ValidateMail from '../views/ValidateMail'
 import EspaceUtilisateur from '../views/EspaceUtilisateur'
 import Scheduler from '../views/Scheduler'
 
@@ -16,6 +18,11 @@ const routes = [
     component: Login
   },
   {
+    path: '/Register',
+    name: 'Register',
+    component: Register
+  },
+  {
     path: '/EspaceUtilisateur',
     name: 'EspaceUtilisateur',
     component: EspaceUtilisateur
@@ -24,6 +31,11 @@ const routes = [
     path: '/Scheduler',
     name: 'Scheduler',
     component: Scheduler
+  },
+  {
+    path: '/ValidateMail',
+    name: 'ValidateMail',
+    component: ValidateMail
   },
   {
     path: '/about',

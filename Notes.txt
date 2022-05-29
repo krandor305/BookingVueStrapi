@@ -20,3 +20,39 @@ Social:
 
 https://github.com/nhn/tui.calendar/blob/master/docs/getting-started.md
 https://jsrepos.com/lib/nhnent-tui-calendar#-examples
+
+landing page:
+https://michalsnik.github.io/aos/
+https://github.com/peachananr/onepage-scroll
+https://rishabhp.github.io/bideo.js/
+
+pour profil utilisateur:
+https://multiple.js.org/
+
+
+in tripadvisor (https://www.tripadvisor.com/Attractions-g293732-Activities-c42-Casablanca_Casablanca_Settat.html):
+var arr = []
+for(var i=2;i<32;i++)
+    {
+        var obj = {}
+        if($('#lithium-root > main > span > div > div.FrWCV.z.bFzKI > div > div:nth-child(2) > div.JzhQk._T > span > div > div:nth-child(2) > div > div.eAbRL._T > div > div > section:nth-child('+i+') > div > span > div > article > div.eLWnh.P0 > header > div > div > a:nth-child(1) > h3 > div > span'))
+        {
+                               obj['Title'] = $('#lithium-root > main > span > div > div.FrWCV.z.bFzKI > div > div:nth-child(2) > div.JzhQk._T > span > div > div:nth-child(2) > div > div.eAbRL._T > div > div > section:nth-child('+i+') > div > span > div > article > div.eLWnh.P0 > header > div > div > a:nth-child(1) > h3 > div > span').textContent
+        }
+        arr.push(obj)
+    }
+
+in strapi to add:
+
+$.ajax({url:'http://localhost:8010/api/services',method: "POST"
+							,beforeSend: function(request) {
+								request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt);
+							},
+                            data:{data:{
+                                Description:'test1',
+                                Title:'test1',
+                                Type:'Autre',
+                                ActualDescription:'test1'}
+                              }
+						})
+    authenticated create role to remove

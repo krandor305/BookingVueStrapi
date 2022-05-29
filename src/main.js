@@ -22,6 +22,7 @@ import Checkbox from 'primevue/checkbox';
 import Dialog from 'primevue/dialog';
 import Calendar from 'primevue/calendar';
 import ToastService from 'primevue/toastservice';
+import Toast from 'primevue/toast';
 
 window.$ = jquery
 
@@ -44,3 +45,4 @@ app.component('Checkbox',Checkbox)
 app.component('MegaMenu',MegaMenu)
 app.component('DropDown',DropDown)
 app.component('Calendar',Calendar)
+app.component('Toast',Toast)

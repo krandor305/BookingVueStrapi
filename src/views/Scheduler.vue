@@ -1,14 +1,17 @@
 <template>
 	<div id="app">
-		{{bookings}}
+		<!-- {{bookings}} -->
 		<h1>My Calendar</h1>
 		   <div id="menu" style="padding:20px">
-			   {{ calendar?(monthNames[new Date(calendar.getDate()).getMonth()]):"" }}
 				<Button icon="pi pi-arrow-left" class="p-button-rounded p-button-secondary" label="previous" @click="previousMonth"/>
 				&nbsp;
 				<Button icon="pi pi-home" class="p-button-rounded p-button-secondary" label="today" @click="calendar.today()"/>
 				&nbsp;
 				<Button icon="pi pi-arrow-right" class="p-button-rounded p-button-secondary" label="next" @click="nextMonth"/>
+				&nbsp;
+				<br>
+				<br>
+				{{ calendar?(monthNames[new Date(calendar.getDate()).getMonth()]):"" }}
 			</div>
 		<div id="calendar" style="height: 800px;"></div>
 	</div>
@@ -32,9 +35,7 @@
 				services:[],
 				actualDate:new Date(),
 				calendar:null,
-				monthNames:["January", "February", "March", "April", "May", "June",
-				"July", "August", "September", "October", "November", "December"
-				]
+				monthNames:["janvier", "février", "mars", "avril", "mai", "juin", "juillet", "août", "septembre", "octobre", "novembre", "décembre"]
 
 			}
 		},
@@ -50,7 +51,7 @@
 			this.calendar = new Calendar('#calendar', {
 			defaultView: 'month',
 			// taskView: true,
-			 useCreationPopup: true,
+			 //useCreationPopup: true,
       		 useDetailPopup: true,
 			});
 			this.loadBookings()
@@ -140,8 +141,8 @@
 	#app {
 		font-family: 'Avenir', Helvetica, Arial, sans-serif;
 		color: #2c3e50;
-		height: 67vh;
-		width: 90vw;
+		/* height: 67vh;
+		width: 90vw; */
 		margin-left: auto;
 		margin-right: auto;
 	}
