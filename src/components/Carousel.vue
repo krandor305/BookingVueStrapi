@@ -1,34 +1,20 @@
 <template>
   <div class="slideshow-container">
 
-    <div class="mySlides fade">
-      <div class="numbertext">1 / 3</div>
-      <img src="https://source.unsplash.com/600x400/?carousel" style="width:100%">
+    <div class="mySlides fade" v-for='image in images'>
+      <div class="numbertext">1 / {{images.length}}</div>
+      <img :src="image" style="width:100%">
       <!-- <div class="text">Caption Text</div> -->
     </div>
 
-    <div class="mySlides fade">
-      <div class="numbertext">2 / 3</div>
-      <img src="https://source.unsplash.com/600x400/?carousel" style="width:100%">
-      <!-- <div class="text">Caption Two</div> -->
-    </div>
-
-    <div class="mySlides fade">
-      <div class="numbertext">3 / 3</div>
-      <img src="https://source.unsplash.com/600x400/?carousel" style="width:100%">
-      <!-- <div class="text">Caption Three</div> -->
-    </div>
-
-    <a class="prev" @click="plusSlides(-1)">❮</a>
+    <a class="prev" @click="plusSlides(-1)" style="left: 0;">❮</a>
     <a class="next" @click="plusSlides(1)">❯</a>
 
     </div>
     <br>
 
     <div style="text-align:center">
-      <span class="dot" @click="currentSlide(1)"></span> 
-      <span class="dot" @click="currentSlide(2)"></span> 
-      <span class="dot" @click="currentSlide(3)"></span> 
+      <span class="dot" v-for="(item, index) in images" @click="currentSlide(index)"></span> 
     </div>
 </template>
 
@@ -39,6 +25,7 @@ export default defineComponent({
   name: 'WrapAround',
   components: {
   },
+  props:['images'],
   data() {
         return {
             slideIndex:1

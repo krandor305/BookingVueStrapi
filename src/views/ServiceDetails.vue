@@ -10,13 +10,14 @@
                         <Button type="button" @click="Validation(selectedService)">Intégrer l'évenement</Button>
                     </div>
                     <div class="col-6">
-
-                        <iframe v-if="service.Coordinates && service.Coordinates.X && service.Coordinates.Y" width="100%" height="400" :src="'https://www.google.com/maps/@'+service.Coordinates.X+','+service.Coordinates.Y+'?output=embed'" scrolling="no" frameborder="0"></iframe>
+                        
+                        <iframe v-if="service.Coordinates && service.Coordinates.X && service.Coordinates.Y" width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" :src="'https://www.openstreetmap.org/export/embed.html?bbox='+service.Coordinates.Y+'%2C'+service.Coordinates.X+'%2C'+service.Coordinates.Y+'%2C'+service.Coordinates.X+'&amp;layer=mapnik&amp;marker='+service.Coordinates.X+'%2C'+service.Coordinates.Y" style="border: 1px solid black"></iframe>
+                        <!-- <iframe v-if="service.Coordinates && service.Coordinates.X && service.Coordinates.Y" width="100%" height="400" :src="'https://www.openstreetmap.org/#map=19/'+service.Coordinates.X+'/'+service.Coordinates.Y" scrolling="no" frameborder="0"></iframe> -->
                         <iframe v-else width="100%" height="400" src="https://www.google.com/maps?output=embed" scrolling="no" frameborder="0"></iframe>
 
                     </div>
                     <div class="col-12">
-                        <Carousel/>
+                        <Carousel v-if="images && images.length>0" :images="images"/>
                     </div>
                 </div>
             </div>
@@ -43,6 +44,7 @@ export default {
   data() {
         return {
             service:{},
+            images:[]
         }
     },
     mounted()
@@ -56,11 +58,35 @@ export default {
         },
         url: 'http://localhost:8010/api/services/'+ref.id,
         success: function(msg) {
-            debugger;
             console.log(msg)
             if(msg.data.attributes)
             { 
                 ref.service = msg.data.attributes
+            }
+        
+        },
+        error: function(msg) {
+            console.log(msg)
+        
+        }
+        });
+
+        $.ajax({
+        type: "Get",
+        beforeSend: function(request) {
+            request.setRequestHeader('content-type', 'text/plain')
+            request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt)
+        },
+        url: 'http://localhost:8010/api/assetUpload/GetEventPics/'+ref.id,
+        success: function(msg) {
+                debugger;
+                console.log(msg)
+            if(msg.length>0)
+            { 
+                ref.images = msg.map(function(d){
+                    return d.Media.Data
+                })
+                
             }
         
         },

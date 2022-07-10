@@ -75,6 +75,8 @@
               </template>
               <template #footer>
                   <Button label="Réserver" @click="openReservation(slotProps.data)"/>
+                   &nbsp;
+                  <Button label="Consulter" @click="$router.push('/ServiceDetails/'+slotProps.data.id)"/>
                   <!-- <Button icon="pi pi-times" label="Cancel" class="p-button-secondary" style="margin-left: .5em" /> -->
               </template>
           </Card>
