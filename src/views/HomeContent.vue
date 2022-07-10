@@ -23,14 +23,14 @@
     </div>
   <template #header>
     <div>
-      <Button type="button" @click="Validation(selectedService)">Valider</Button> &nbsp; <span><b>Prix:</b> {{selectedService.attributes.Price}}</span>
+      <Button type="button" @click="Validation(selectedService)">Ajouter à mon emploi du temps</Button> &nbsp; <span v-if="selectedService.attributes.Price"><b>Prix:</b> {{selectedService.attributes.Price}}</span>
     </div>
   </template>
 </Dialog>
 
  <div class="homeContent">
-   <div class="grid">
-      <div :class="'col-'+searchDiv" style='background-color:white;padding:50px;margin:20px;height:50%;border-radius:75px;transition: width 1s;'>
+   <div class="grid" style="min-height:30vh">
+      <div :class="'col-'+searchDiv" style='background-color:white;padding:50px;margin:20px;height:50%;border-radius:75px;transition: width 1s'>
         <div class="grid">
           <!-- <div class="col-4" >
           <span>Type: <Dropdown v-model="selectedTypes" :options="Types" optionLabel="name" style="width:5rem"/></span>
@@ -41,8 +41,14 @@
               <br/>
               <br/>
               <div class="p-inputgroup">
-                    <InputText placeholder="Keyword" v-model="searchTerm" style="height: 75px;"/>
+                    <InputText placeholder="Recherche" v-model="searchTerm" style="height: 75px;"/>
                 </div>
+                <br/>
+                <br/>
+                <!-- <div class="p-inputgroup">
+                  <i style="font-size:0.7rem;margin-bottom:2px;margin-top: -10px;">Recherche avancée: </i>
+                    <span><Dropdown v-model="selectedTypes" :options="Types" optionLabel="name" style="width:10rem"/></span>
+                </div> -->
             </span>
           </div>
         </div>
@@ -163,6 +169,7 @@ export default {
       else
       {
         var ref = this;
+        $('#app > div.homeContent > div:nth-child(1)').css("min-height","100vh")
         setTimeout(function(){
           if(ref.resultDiv == false && (!this.searchTerm || this.searchTerm==""))
           {
@@ -176,7 +183,7 @@ export default {
   },
   data() {
         return {
-          selectedTypes: null,
+          selectedTypes: {name: 'Tout', code: ''},
           Types: [
             {name: 'Tout', code: ''},
             {name: 'Restaurants', code: 'Restaurant'},

@@ -4,6 +4,7 @@ import Login from '../views/Login'
 import Register from '../views/Register'
 import ValidateMail from '../views/ValidateMail'
 import EspaceUtilisateur from '../views/EspaceUtilisateur'
+import ServiceDetails from '../views/ServiceDetails'
 import Scheduler from '../views/Scheduler'
 
 const routes = [
@@ -26,6 +27,12 @@ const routes = [
     path: '/EspaceUtilisateur',
     name: 'EspaceUtilisateur',
     component: EspaceUtilisateur
+  },
+  {
+    path: '/ServiceDetails/:id',
+    name: 'ServiceDetails',
+    component: ServiceDetails,
+    props:true
   },
   {
     path: '/Scheduler',
