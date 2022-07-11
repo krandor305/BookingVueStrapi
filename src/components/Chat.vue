@@ -1,16 +1,16 @@
 <template>
-<div class="chatbox-holder" style="height:100%">
+<div class="chatbox-holder">
   <div class="chatbox group-chat">
     <div class="chatbox-top">
       <!-- <div class="chatbox-avatar">
-        <a target="_blank" href="#"><img src="https://source.unsplash.com/600x400/?event" /></a>
+        <a target="_blank" href="#"><img src="https://source.unsplash.com/600x400/?new,user,icon" /></a>
       </div> -->
       
-      <div class="chat-group-name">
+      <!-- <div class="chat-group-name">
         <span class="status away"></span>
         Group name comes here
-      </div>
-      <div class="chatbox-icons">
+      </div> -->
+      <!-- <div class="chatbox-icons">
         <label for="chkSettings"><i class="fa fa-gear"></i></label><input type="checkbox" id="chkSettings" />
         <div class="settings-popup">
           <ul>
@@ -22,64 +22,28 @@
         </div>
         <a href="javascript:void(0);"><i class="fa fa-minus"></i></a>
         <a href="javascript:void(0);"><i class="fa fa-close"></i></a>       
-      </div>      
+      </div>       -->
+      <Button icon="pi pi-minus" class="p-button-rounded p-button-text p-button-secondary" @click="$emit('closeChat')"/>
     </div>
     
     <div class="chat-messages">
-       <div class="message-box-holder">
-        <div class="message-box">
-          What are you people doing?
+       
+       <div>
+       <div v-for="Message in messageList" class="message-box-holder" style="float:right">
+        <div class="message-box" v-if="Message.UserId == UserId">
+          {{Message.Content}}
         </div>
-      </div>
-      
-      <div class="message-box-holder">
-        <div class="message-sender">
-          <a href="#">Ben Stiller</a>
+        <div class="message-sender" v-if="Message.UserId != UserId" style="float:left">
+          <a href="#">{{Message.UserId}}</a>
          </div>
-        <div class="message-box message-partner">
-          Hey, nobody's here today. I'm at office alone.
-          Hey, nobody's here today. I'm at office alone.
+        <div class="message-box message-partner" v-if="Message.UserId != UserId" style="float:left">
+          {{Message.Content}}
         </div>
       </div>
-      
-      <div class="message-box-holder">
-        <div class="message-box">
-          who else is online?
-        </div>
-      </div>
-      
-      <div class="message-box-holder">
-        <div class="message-sender">
-          <a href="#">Chris Jerrico</a>
-         </div>
-        <div class="message-box message-partner">
-          I'm also online. How are you people?
-        </div>
-      </div>
-      
-      <div class="message-box-holder">
-        <div class="message-box">
-          I am fine.
-        </div>
-      </div>
-      
-      <div class="message-box-holder">
-        <div class="message-sender">
-          <a href="#">Rockey</a>
-         </div>
-        <div class="message-box message-partner">
-          I'm also online. How are you people?
-        </div>
-      </div>
-      
-      <div class="message-box-holder">
-        <div class="message-sender">
-          <a href="#">Christina Farzana</a>
-         </div>
-        <div class="message-box message-partner">
-          We are doing fine. I am in.
-        </div>
-      </div>      
+
+
+    </div>
+
     </div>
     
     <div class="chat-input-holder">
@@ -94,62 +58,40 @@
 <script>
 export default {
   name: 'app',
+  props:['id'],
   data() {
     return {
-      participants: [
-        {
-          id: 'user1',
-          name: 'Matteo',
-          imageUrl: 'https://avatars3.githubusercontent.com/u/1915989?s=230&v=4'
-        },
-        {
-          id: 'user2',
-          name: 'Support',
-          imageUrl: 'https://avatars3.githubusercontent.com/u/37018832?s=200&v=4'
-        }
-      ], // the list of all the participant of the conversation. `name` is the user name, `id` is used to establish the author of a message, `imageUrl` is supposed to be the user avatar.
-      titleImageUrl: 'https://a.slack-edge.com/66f9/img/avatars-teams/ava_0001-34.png',
-      messageList: [
-          { type: 'text', author: `me`, data: { text: `Say yes!` } },
-          { type: 'text', author: `user1`, data: { text: `No.` } },
-          { type: 'text', author: `me`, data: { text: `Say yes!` } },
-          { type: 'text', author: `user1`, data: { text: `No.` } },
-          { type: 'text', author: `me`, data: { text: `Say yes!` } },
-          { type: 'text', author: `user1`, data: { text: `No.` } },
-          { type: 'text', author: `me`, data: { text: `Say yes!` } },
-          { type: 'text', author: `user1`, data: { text: `No.` } },
-      ], // the list of the messages to show, can be paginated and adjusted dynamically
-      newMessagesCount: 0,
-      isChatOpen: true, // to determine whether the chat window should be open or closed
-      showTypingIndicator: '', // when set to a value matching the participant.id it shows the typing indicator for the specific user
-      colors: {
-        header: {
-          bg: '#4e8cff',
-          text: '#ffffff'
-        },
-        launcher: {
-          bg: '#4e8cff'
-        },
-        messageList: {
-          bg: '#ffffff'
-        },
-        sentMessage: {
-          bg: '#4e8cff',
-          text: '#ffffff'
-        },
-        receivedMessage: {
-          bg: '#eaeaea',
-          text: '#222222'
-        },
-        userInput: {
-          bg: '#f4f7f9',
-          text: '#565867'
-        }
-      }, // specifies the color scheme for the component
-      alwaysScrollToBottom: false, // when set to true always scrolls the chat to the bottom when new events are in (new message, user starts typing...)
-      messageStyling: true // enables *bold* /emph/ _underline_ and such (more info at github.com/mattezza/msgdown)
+      UserId:JSON.parse(localStorage.userinfo).user.id,
+      messageList: [], 
     }
   },
+  mounted()
+  {
+    var ref = this;
+    $.ajax({
+      type: "Get",
+      beforeSend: function(request) {
+        request.setRequestHeader('content-type', 'text/plain')
+        request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt)
+      },
+      url: 'http://localhost:8010/api/messageGetByService/'+ref.id,
+      success: function(msg) {
+        debugger;
+        console.log(msg)
+        msg = msg.results
+        if(msg.length>0)
+        { 
+          ref.messageList = msg
+        }
+       
+      },
+      error: function(msg) {
+        console.log(msg)
+       
+      }
+    });
+  },
+  emits:['closeChat'],
   methods: {
     sendMessage (text) {
       if (text.length > 0) {
@@ -207,19 +149,17 @@ ul {
 }
 
 .chatbox-holder {
-  /* position: fixed; */
-  /* right: 0; */
-  /* bottom: 0; */
-  height:100%;
+  position: fixed;
+  right: 0;
+  bottom: 0;
   display: flex;
   align-items: flex-end;
   height: 0;
 }
 
 .chatbox {
-  /* width: 400px;
-  height: 400px; */
-  height:100vh;
+  width: 400px;
+  height: 400px;
   margin: 0 20px 0 0;
   position: relative;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
@@ -229,8 +169,6 @@ ul {
   background: white;
   bottom: 0;
   transition: .1s ease-out;
-  margin: 5px;
-  padding: 5px;
 }
 
 .chatbox-top {
@@ -322,7 +260,6 @@ ul {
   border-top: 1px solid rgba(0, 0, 0, .05);
   padding: 10px;
   overflow: auto;
-  display: flex;
   flex-flow: row wrap;
   align-content: flex-start;
   flex: 1;

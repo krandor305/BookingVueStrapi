@@ -46,8 +46,9 @@ const routes = [
     component: ValidateMail
   },
   {
-    path: '/Chat',
+    path: '/Chat/:id',
     name: 'Chat',
+    props:true,
     component: Chat
   },
   {

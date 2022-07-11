@@ -7,7 +7,7 @@
                         <h2>{{service.Title}}</h2>
                         <p style="text-align:left">{{service.Description}}</p>
                         <br/>
-                        <Button type="button" @click="Validation(selectedService)">Intégrer l'évenement</Button>
+                        <Button type="button" @click="$router.push('/Chat/'+id)">Voir la discussion</Button>
                     </div>
                     <div class="col-6">
                         
@@ -24,6 +24,9 @@
             <div class="flex align-items-center justify-content-center"></div>
     </div>
     
+    <Button @click="hiddenChat=false" v-if="hiddenChat" icon="pi pi-telegram" class="p-button-rounded p-button-primary" style="position:fixed;bottom:20px;right:20px"/>
+    <Chat v-else :id="id" @closeChat="hiddenChat=true"/>
+    
 </template>
 
 <script>
@@ -31,6 +34,7 @@ import Checkbox from 'primevue/checkbox';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
 import Carousel from '../components/Carousel.vue'
+import Chat from '../components/Chat'
 
 export default {
   name: 'Home',
@@ -38,13 +42,15 @@ export default {
     Checkbox,
     InputText,
     Button,
-    Carousel
+    Carousel,
+    Chat
   },
   props:['id'],
   data() {
         return {
             service:{},
-            images:[]
+            images:[],
+            hiddenChat:true
         }
     },
     mounted()
