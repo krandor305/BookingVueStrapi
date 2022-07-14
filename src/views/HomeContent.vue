@@ -76,7 +76,41 @@
               <template #footer>
                   <Button label="Réserver" @click="openReservation(slotProps.data)"/>
                    &nbsp;
-                  <Button label="Consulter" @click="$router.push('/ServiceDetails/'+slotProps.data.id)"/>
+                  <Button label="Voir la fiche de l'évenement" @click="$router.push('/ServiceDetails/'+slotProps.data.id)"/>
+                  <!-- <Button icon="pi pi-times" label="Cancel" class="p-button-secondary" style="margin-left: .5em" /> -->
+              </template>
+          </Card>
+            <!-- <div>Place: <b>{{slotProps.data.element}}</b></div> -->
+          </template>
+          <!-- <template #grid="slotProps">
+            <div>Place: <b>{{slotProps.data.element}}</b></div>
+          </template> -->
+        </DataView>
+
+      </div>
+      <div v-else-if="recentEvents.length>0" style="padding:20px">
+        <div class="text-6xl text-primary font-bold mb-3">Evenements prochains:</div>
+        <DataView :value="recentEvents" :paginator="true" :rows="3" :style="'background-color:white;opacity:'+opacityResults">
+          <template #paginatorend>
+            <Button type="button" icon="pi pi-search" />
+          </template>
+          <template #list="slotProps" >
+            <Card style="background-color:white;width: 100%;">
+              <template #header>
+                  <!-- <img alt="user header" src="demo/images/usercard.png"> -->
+              </template>
+              <template #title>
+                  {{slotProps.data.attributes.Title}}
+              </template>
+              <template #content>
+                  {{slotProps.data.attributes.Description}}
+                  <br/>
+                  {{slotProps.data.attributes.ActualDescription}}
+              </template>
+              <template #footer>
+                  <Button label="Réserver" @click="openReservation(slotProps.data)"/>
+                   &nbsp;
+                  <Button label="Voir la fiche de l'évenement" @click="$router.push('/ServiceDetails/'+slotProps.data.id)"/>
                   <!-- <Button icon="pi pi-times" label="Cancel" class="p-button-secondary" style="margin-left: .5em" /> -->
               </template>
           </Card>
@@ -90,6 +124,7 @@
       </div>
       </Transition>
    </div>
+   <br/>
    <div class="grid grid-nogutter surface-section text-800">
     <div class="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
         <section>
@@ -156,8 +191,16 @@ export default {
   },
   computed:
   {
+    recentEvents()
+    {
+      var ref = this;
+      return this.searchElements.filter(function(d){
+        return ref.isDateInThisWeek(new Date(d.attributes.DateDebut))
+        })
+    },
     searchDiv()
     {
+      debugger;
       if(this.resultDiv == false && (!this.searchTerm || this.searchTerm==""))
       {
         // this.resultDiv=false;
@@ -207,6 +250,21 @@ export default {
         }
     },
   methods:{
+    isDateInThisWeek(date) {
+      const todayObj = new Date();
+      const todayDate = todayObj.getDate();
+      const todayDay = todayObj.getDay();
+
+      // get first date of week
+      const firstDayOfWeek = new Date(todayObj.setDate(todayDate - todayDay));
+
+      // get last date of week
+      const lastDayOfWeek = new Date(firstDayOfWeek);
+      lastDayOfWeek.setDate(lastDayOfWeek.getDate() + 6);
+
+      // if date is equal or within the first and last dates of the week
+      return date >= firstDayOfWeek && date <= lastDayOfWeek;
+    },
     openReservation(service)
     {
       var ref=this;

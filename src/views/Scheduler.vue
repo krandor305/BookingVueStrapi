@@ -1,7 +1,7 @@
 <template>
 	<div id="app">
 		<!-- {{bookings}} -->
-		<h1>My Calendar</h1>
+		<!-- <h1>My Calendar</h1>
 		   <div id="menu" style="padding:20px">
 				<Button icon="pi pi-arrow-left" class="p-button-rounded p-button-secondary" label="previous" @click="previousMonth"/>
 				&nbsp;
@@ -13,13 +13,46 @@
 				<br>
 				{{ calendar?(monthNames[new Date(calendar.getDate()).getMonth()]):"" }}
 			</div>
-		<div id="calendar" style="height: 800px;"></div>
+		<div id="calendar" style="height: 800px;"></div> -->
+		<DataView :value="bookings.filter(function(d){if(d && d.Title){return d.Title}})" :paginator="true" :rows="10">
+          <template #paginatorend>
+            <Button type="button" icon="pi pi-search" />
+          </template>
+          <template #list="slotProps" >
+            <Card style="background-color:white;width: 100%;">
+              <template #header>
+                  <!-- <img alt="user header" src="demo/images/usercard.png"> -->
+              </template>
+              <template #title>
+                  {{slotProps.data.Title}}
+              </template>
+              <template #content>
+                  {{slotProps.data.Description}}
+                  <br/>
+				  <b>{{new Date(slotProps.data.DateDebut).toLocaleDateString()}} {{new Date(slotProps.data.DateDebut).getHours()}}:{{new Date(slotProps.data.DateDebut).getMinutes()}} - {{new Date(slotProps.data.DateFin).toLocaleDateString()}} {{new Date(slotProps.data.DateFin).getHours()}}:{{new Date(slotProps.data.DateFin).getMinutes()}}</b>
+                  <!-- {{slotProps.data.ActualDescription}} -->
+              </template>
+              <template #footer>
+                  <Button label="Réserver" @click="openReservation(slotProps.data)"/>
+                   &nbsp;
+                  <Button label="Voir la fiche de l'évenement" @click="$router.push('/ServiceDetails/'+slotProps.data.id)"/>
+                  <!-- <Button icon="pi pi-times" label="Cancel" class="p-button-secondary" style="margin-left: .5em" /> -->
+              </template>
+          </Card>
+            <!-- <div>Place: <b>{{slotProps.data.element}}</b></div> -->
+          </template>
+          <!-- <template #grid="slotProps">
+            <div>Place: <b>{{slotProps.data.element}}</b></div>
+          </template> -->
+        </DataView>
 	</div>
 </template>
 <script>
 
 	import axios from 'axios';
 	import Calendar from 'tui-calendar'; /* ES6 */
+	import DataView from 'primevue/dataview';
+	import Card from 'primevue/card';
 	import "tui-calendar/dist/tui-calendar.css";
 
 	// If you use the default popups, use this.
@@ -40,25 +73,41 @@
 			}
 		},
 		watch:{
-			'bookings':function(newFlag){
-				this.calendar.clear()
-				this.calendar.createSchedules(newFlag,true);
-				console.log(this.calendar)
-			}
+			// 'bookings':function(newFlag){
+			// 	this.calendar.clear()
+			// 	this.calendar.createSchedules(newFlag,true);
+			// 	console.log(this.calendar)
+			// }
 		},
 		mounted(){
 			
-			this.calendar = new Calendar('#calendar', {
-			defaultView: 'month',
-			// taskView: true,
-			 //useCreationPopup: true,
-      		 useDetailPopup: true,
-			});
+			// this.calendar = new Calendar('#calendar', {
+			// defaultView: 'month',
+			// // taskView: true,
+			//  //useCreationPopup: true,
+      		//  useDetailPopup: true,
+			// });
 			this.loadBookings()
 		},
 		components: {
+			DataView:DataView,
+			Card:Card
 		},
 		methods: {
+			formatDate()
+			{
+				var d='dd/mm/yy hh:MM:ss';
+				var d1=d.split(" ");
+				var date=d1[0].split("/");
+				var time=d1[1].split(":");
+				var dd=date[0];
+				var mm=date[1]-1;
+				var yy=date[2];
+				var hh=time[0];
+				var min=time[1];
+				var ss=time[2];
+				var fromdt= new Date("20"+yy,mm-1,dd,hh,min,ss);
+			},
 			previousMonth(){
 				// var d = this.actualDate
 				// this.actualDate = new Date(d.setMonth(d.getMonth()-1))
