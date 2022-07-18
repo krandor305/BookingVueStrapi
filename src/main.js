@@ -24,6 +24,7 @@ import Calendar from 'primevue/calendar';
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 
+window.GLOBALVARS = process.env
 window.$ = jquery
 
 const app = createApp(App)

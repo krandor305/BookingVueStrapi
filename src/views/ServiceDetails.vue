@@ -3,15 +3,15 @@
             <div class="flex align-items-center justify-content-center"></div>
             <div class="flex align-items-center justify-content-center">
                 <div class="grid" style="width:60%;padding:20px">
-                    <div class="col-6">
+                    <div :class="isMobile?'col-12':'col-6'">
                         <h2>{{service.Title}}</h2>
                         <p style="text-align:left">{{service.Description}}</p>
                         <br/>
-                        <Button type="button" @click="$router.push('/Chat/'+id)">Voir la discussion</Button>
+                        <Button v-if="isMobile" type="button" @click="hiddenChat=false">Voir la discussion</Button>
                     </div>
-                    <div class="col-6">
+                    <div :class="isMobile?'col-12':'col-6'">
                         
-                        <iframe v-if="service.Coordinates && service.Coordinates.X && service.Coordinates.Y" width="425" height="350" frameborder="0" scrolling="no" marginheight="0" marginwidth="0" :src="'https://www.openstreetmap.org/export/embed.html?bbox='+service.Coordinates.Y+'%2C'+service.Coordinates.X+'%2C'+service.Coordinates.Y+'%2C'+service.Coordinates.X+'&amp;layer=mapnik&amp;marker='+service.Coordinates.X+'%2C'+service.Coordinates.Y" style="border: 1px solid black"></iframe>
+                        <iframe  v-if="service.Coordinates && service.Coordinates.X && service.Coordinates.Y" width="100%" height="100%"  frameborder="0" scrolling="no" marginheight="0" marginwidth="0" :src="'https://www.openstreetmap.org/export/embed.html?bbox='+service.Coordinates.Y+'%2C'+service.Coordinates.X+'%2C'+service.Coordinates.Y+'%2C'+service.Coordinates.X+'&amp;layer=mapnik&amp;marker='+service.Coordinates.X+'%2C'+service.Coordinates.Y" style="border: 1px solid black"></iframe>
                         <!-- <iframe v-if="service.Coordinates && service.Coordinates.X && service.Coordinates.Y" width="100%" height="400" :src="'https://www.openstreetmap.org/#map=19/'+service.Coordinates.X+'/'+service.Coordinates.Y" scrolling="no" frameborder="0"></iframe> -->
                         <iframe v-else width="100%" height="400" src="https://www.google.com/maps?output=embed" scrolling="no" frameborder="0"></iframe>
 
@@ -24,8 +24,8 @@
             <div class="flex align-items-center justify-content-center"></div>
     </div>
     
-    <Button @click="hiddenChat=false" v-if="hiddenChat" icon="pi pi-telegram" class="p-button-rounded p-button-primary" style="position:fixed;bottom:20px;right:20px"/>
-    <Chat v-else :id="id" @closeChat="hiddenChat=true"/>
+    <Button @click="hiddenChat=false" v-if="hiddenChat" icon="pi pi-telegram" class="p-button-rounded p-button-primary" :style="(isMobile?'font-size:16px;':'')+'position:fixed;bottom:20px;right:20px'"/>
+    <Chat :style="isMobile?'width:100%':''" v-else :id="id" @closeChat="hiddenChat=true"/>
     
 </template>
 
@@ -51,6 +51,13 @@ export default {
             service:{},
             images:[],
             hiddenChat:true
+        }
+    },
+    computed:
+    {
+        isMobile()
+        {
+            return window.screen.width <= 1024
         }
     },
     mounted()

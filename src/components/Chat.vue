@@ -34,7 +34,7 @@
           {{Message.Content}}
         </div>
         <div class="message-sender" v-if="Message.UserId != UserId" style="float:left">
-          <a href="#">{{Message.UserId}}</a>
+          <!-- <a href="#">{{Message.UserId}}</a> -->
          </div>
         <div class="message-box message-partner" v-if="Message.UserId != UserId" style="float:left">
           {{Message.Content}}
