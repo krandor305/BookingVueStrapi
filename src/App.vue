@@ -41,4 +41,17 @@ export default {
 #nav a.router-link-exact-active {
   color: #42b983;
 }
+
+button
+{
+  background:rgb(255, 114, 0) !important;
+  /* color:white !important; */
+  border:0px !important
+
+}
+
+.p-menuitem
+{
+  color:black !important
+}
 </style>

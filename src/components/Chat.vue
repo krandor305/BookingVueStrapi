@@ -160,7 +160,7 @@ ul {
 .chatbox {
   width: 400px;
   height: 400px;
-  margin: 0 20px 0 0;
+  /* margin: 0 20px 0 0; */
   position: relative;
   box-shadow: 0 0 5px 0 rgba(0, 0, 0, .2);
   display: flex;

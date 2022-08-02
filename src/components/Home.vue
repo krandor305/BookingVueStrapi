@@ -1,6 +1,7 @@
 <template>
 			<div>
-				<Menubar :model="items">
+        <div class="menuBar">
+				<Menubar :model="items" style="background:#ff7200;color:white !important">
                <!-- <template #item="{item}">
                   <router-link :to="item.to">
                      {{item.name}}
@@ -8,9 +9,10 @@
                   </router-link> 
                </template> -->
                <template #end>
-                  <Button icon="pi pi-user" class="p-button-rounded p-button-secondary" @click="$router.push('/EspaceUtilisateur')"/>
+                  <Button icon="pi pi-user" class="p-button-rounded" @click="$router.push('/EspaceUtilisateur')" style="color: black;background-color: #d8d8d8;"/>
 					</template>
             </Menubar>
+        </div>
 			</div>
 
 </template>
@@ -30,10 +32,21 @@ export default {
         return {
             items:[
             {label:'Accueil',icon:'pi pi-fw pi-home',name:"Accueil",to:"/"},
-            {label:'Scheduler',icon:'pi pi-fw pi-calendar',name:"Scheduler",to:"/Scheduler"},
+            {label:'Mes évenements',icon:'pi pi-fw pi-calendar',name:"Scheduler",to:"/Scheduler"},
             // {label:'Espace utilisateur',icon:'pi pi-fw pi-sitemap',name:"EspaceUtilisateur",to:"/EspaceUtilisateur"}
             ]
         }
     },
 }
 </script>
+
+<style>
+  #app > div:nth-child(2) > div > div .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-text {
+    /* color: white !important; */
+  }
+
+  #app > div:nth-child(2) > div > div .p-menubar .p-menubar-root-list > .p-menuitem > .p-menuitem-link .p-menuitem-icon {
+    /* color:#d8d8d8 !important */
+  }
+
+</style>

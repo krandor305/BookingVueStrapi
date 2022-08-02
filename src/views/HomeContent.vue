@@ -28,119 +28,43 @@
   </template>
 </Dialog>
 
- <div class="homeContent">
-   <div class="grid" style="min-height:30vh">
-      <div :class="'col-'+searchDiv" style='background-color:white;padding:50px;margin:20px;height:50%;border-radius:75px;transition: width 1s'>
-        <div class="grid">
-          <!-- <div class="col-4" >
-          <span>Type: <Dropdown v-model="selectedTypes" :options="Types" optionLabel="name" style="width:5rem"/></span>
-          </div> -->
-          <div class="col-12" >
-            <span>
-              <b style="float:left;font-size:30px">Planifiez votre evening en quelques clicks:</b>
-              <br/>
-              <br/>
-              <div class="p-inputgroup">
-                    <InputText placeholder="Recherche" v-model="searchTerm" style="height: 75px;"/>
-                </div>
-                <br/>
-                <br/>
-                <!-- <div class="p-inputgroup">
-                  <i style="font-size:0.7rem;margin-bottom:2px;margin-top: -10px;">Recherche avancée: </i>
-                    <span><Dropdown v-model="selectedTypes" :options="Types" optionLabel="name" style="width:10rem"/></span>
-                </div> -->
-            </span>
-          </div>
-        </div>
-      </div>
-      <Transition name="fade">
-      <div v-if="this.searchTerm && resultDiv!=false" :class="'col-'+resultDiv">
-        <!-- {{resultDiv}} -->
-        <DataView :value="searchElements" :paginator="true" :rows="3" :style="'background-color:white;opacity:'+opacityResults">
-          <template #paginatorend>
-            <Button type="button" icon="pi pi-search" />
-          </template>
-          <template #list="slotProps" >
-            <Card style="background-color:white;width: 100%;">
-              <template #header>
-                  <!-- <img alt="user header" src="demo/images/usercard.png"> -->
-              </template>
-              <template #title>
-                  {{slotProps.data.attributes.Title}}
-              </template>
-              <template #content>
-                  {{slotProps.data.attributes.Description}}
-                  <br/>
-                  {{slotProps.data.attributes.ActualDescription}}
-              </template>
-              <template #footer>
-                  <Button label="Réserver" @click="openReservation(slotProps.data)"/>
-                   &nbsp;
-                  <Button label="Voir la fiche de l'évenement" @click="$router.push('/ServiceDetails/'+slotProps.data.id)"/>
-                  <!-- <Button icon="pi pi-times" label="Cancel" class="p-button-secondary" style="margin-left: .5em" /> -->
-              </template>
-          </Card>
-            <!-- <div>Place: <b>{{slotProps.data.element}}</b></div> -->
-          </template>
-          <!-- <template #grid="slotProps">
-            <div>Place: <b>{{slotProps.data.element}}</b></div>
-          </template> -->
-        </DataView>
+ <section class="blog-me pt-100 pb-100" id="blog">
+         <div class="container">
+            <div class="row">
+               <div class="col-xl-6 mx-auto text-center">
+                  <div class="section-title mb-100">
+                  <h4>Cette semaine</h4>
+                  </div>
+               </div>
+            </div>
+            <div class="row">
+               <div class="col-lg-4 col-md-6" v-for="elem in searchElements" :key="elem.id">
+                  <!-- Single Blog -->
+                  <div class="single-blog">
+                     <div class="blog-img">
+                        <img src="http://infinityflamesoft.com/html/abal-preview/assets/img/blog/blog1.jpg" alt="">
+                        <div class="post-category">
+                           <a href="#">{{elem.attributes.Type}}</a>
+                        </div>
+                     </div>
+                     <div class="blog-content">
+                        <div class="blog-title">
+                           <h4><a href="#">{{elem.attributes.Title}}</a></h4>
+                           <div class="meta">
+                              <ul>
+                                 <li>{{new Date(elem.attributes.DateDebut).toLocaleDateString()}} {{new Date(elem.attributes.DateDebut).getHours()}}:{{new Date(elem.attributes.DateDebut).getMinutes()}} - {{new Date(elem.attributes.DateFin).toLocaleDateString()}} {{new Date(elem.attributes.DateFin).getHours()}}:{{new Date(elem.attributes.DateFin).getMinutes()}}</li>
+                              </ul>
+                           </div>
+                        </div>
+                        <p>{{elem.attributes.Description}}</p>
+                        <a href="#" class="box_btn" @click="openReservation(elem)">lire plus</a>
+                     </div>
+                  </div>
+               </div>
 
-      </div>
-      <div v-else-if="recentEvents.length>0" style="padding:20px">
-        <div class="text-6xl text-primary font-bold mb-3">Evenements prochains:</div>
-        <DataView :value="recentEvents" :paginator="true" :rows="3" :style="'background-color:white;opacity:'+opacityResults">
-          <template #paginatorend>
-            <Button type="button" icon="pi pi-search" />
-          </template>
-          <template #list="slotProps" >
-            <Card style="background-color:white;width: 100%;">
-              <template #header>
-                  <!-- <img alt="user header" src="demo/images/usercard.png"> -->
-              </template>
-              <template #title>
-                  {{slotProps.data.attributes.Title}}
-              </template>
-              <template #content>
-                  {{slotProps.data.attributes.Description}}
-                  <br/>
-                  {{slotProps.data.attributes.ActualDescription}}
-              </template>
-              <template #footer>
-                  <Button label="Réserver" @click="openReservation(slotProps.data)"/>
-                   &nbsp;
-                  <Button label="Voir la fiche de l'évenement" @click="$router.push('/ServiceDetails/'+slotProps.data.id)"/>
-                  <!-- <Button icon="pi pi-times" label="Cancel" class="p-button-secondary" style="margin-left: .5em" /> -->
-              </template>
-          </Card>
-            <!-- <div>Place: <b>{{slotProps.data.element}}</b></div> -->
-          </template>
-          <!-- <template #grid="slotProps">
-            <div>Place: <b>{{slotProps.data.element}}</b></div>
-          </template> -->
-        </DataView>
-
-      </div>
-      </Transition>
-   </div>
-   <br/>
-   <div class="grid grid-nogutter surface-section text-800">
-    <div class="col-12 md:col-6 p-6 text-center md:text-left flex align-items-center ">
-        <section>
-            <span class="block text-6xl font-bold mb-1">Planifiez votre Week-end en toute sérénité</span>
-            <div class="text-6xl text-primary font-bold mb-3">Pour planifier votre journée,Inscrivez-vous au plus vite</div>
-            <p class="mt-0 mb-4 text-700 line-height-3">Notre equipe ne cesse d'accroitre son catalogue d'activités et de fonctionalités</p>
-            
-            <Button label="Inscription/Login" type="button" class="mr-3 p-button-raised" @click="$router.push('/Login')"></Button>
-            <Button label="Recherche d'activité" type="button" class="p-button-outlined" @click="scrollTop"></Button>
-        </section>
-    </div>
-    <div class="col-12 md:col-6 overflow-hidden">
-        <img src="../assets/img/backgroundhome.jpg" height="250px" width="250px" alt="Image" class="md:ml-auto block md:h-full" style="clip-path: polygon(8% 0, 100% 0%, 100% 100%, 0 100%)">
-    </div>
-    </div>
- </div>
+            </div>
+         </div>
+      </section>
  
 </template>
 
@@ -241,7 +165,7 @@ export default {
           baseElements:[],
           searchElements:[],
           showDialog:false,
-          selectedService:{},
+          selectedService:{attributes:{}},
           dateDebut:new Date(),
           dateFin:new Date(),
           resultDiv:false,
@@ -324,24 +248,132 @@ export default {
 </script>
 
 <style>
-  .homeContent{
-    /* width:100vw; */
-    /* height:100vh; */
-    background-image: url('~@/assets/img/backgroundhome.jpg');
-  }
+  .pb-100 {
+	padding-bottom: 100px;
+}
+.pt-100 {
+	padding-top: 100px;
+}
+.mb-100 {
+	margin-bottom: 100px;
+}
+a {
+	text-decoration: none;
+	color: #333;
+	-webkit-transition: .4s;
+	transition: .4s;
+}
+.section-title {
+	position: relative;
+}
+.section-title p {
+	font-size: 16px;
+	margin-bottom: 5px;
+	font-weight: 400;
+}
+.section-title h4 {
+	font-size: 40px;
+	font-weight: 600;
+	text-transform: capitalize;
+	position: relative;
+	padding-bottom: 20px;
+	display: inline-block;
+}
+.section-title h4::before {
+	position: absolute;
+	content: "";
+	width: 80px;
+	height: 2px;
+	background-color: #d8d8d8;
+	bottom: 0;
+	left: 50%;
+	margin-left: -40px;
+}
+.section-title h4::after {
+	position: absolute;
+	content: "";
+	width: 50px;
+	height: 2px;
+	background-color: #FF7200;
+	left: 0;
+	bottom: 0;
+	left: 50%;
+	margin-left: -25px;
+}
+.blog-img {
+	position: relative;
+}
+.blog-img img {
+	width: 100%;
+}
+.post-category a {
+	display: inline-block;
+	background-color: #FF7200;
+	color: #fff;
+	font-size: 15px;
+	padding: 5px 20px;
+}
+.single-blog:hover img {
+	opacity: .85;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)"
+}
+.post-category {
+	position: absolute;
+	left: 0;
+	bottom: 0;
+}
+.blog-content {
+	padding: 30px 20px;
+}
+.single-blog {
+	border: 1px solid #eee;
+}
+.blog-title h4 {
+	font-size: 20px;
+	font-weight: 500;
+	margin-bottom: 5px;
+}
+.meta ul {
+	margin: 0;
+	padding: 0;
+	list-style: none;
+}
+.meta {
+	margin-bottom: 20px;
+	opacity: .85;
+	-ms-filter: "progid:DXImageTransform.Microsoft.Alpha(Opacity=85)";
+}
+.blog-content a.box_btn {
+	display: inline-block;
+	background-color: #FF7200;
+	padding: 5px 15px;
+	color: #fff;
+	text-transform: capitalize;
+	margin-top: 20px;
+}
+a.box_btn::before {
+	position: absolute;
+	content: "";
+	width: 100%;
+	height: 100%;
+	background-color: #CC5B00;
+	left: -100%;
+	top: 0;
+	-webkit-transition: .5s;
+	transition: .5s;
+	z-index: -1;
+}
+a.box_btn {
+	overflow: hidden;
+	z-index: 2;
+	-webkit-transition: .5s;
+	transition: .5s;
+	position: relative;
+	text-decoration:none;
+}
+a.box_btn:hover::before {
+	left: 0;
+	z-index: -1;
+}
 
-  .homeContent .p-card{
-    box-shadow: 0 !important;
-    border-radius: 0px !important;
-  }
-
-  .fade-enter-active,
-  .fade-leave-active {
-    transition: opacity 1s ease;
-  }
-
-  .fade-enter-from,
-  .fade-leave-to {
-    opacity: 0;
-  }
 </style>
