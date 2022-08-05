@@ -8,21 +8,30 @@
       <h1 style="float:left">&nbsp;Bienvenue {{user.username}}</h1>
       </div>
     </div>
+    <div class="col-12">
+            <div class="card">
+                <h5>Amis (3)</h5>
+                <br/>
+                <Avatar icon="pi pi-user" class="mr-2" size="xlarge" shape="circle" />
+                <Avatar icon="pi pi-user" class="mr-2" size="xlarge" shape="circle" />
+                <Avatar icon="pi pi-user" class="mr-2" size="xlarge" shape="circle" />
+            </div>
+    </div>
     <br/>
 	</TabPanel>
 	<TabPanel header="Réglages">
 		<div class="grid">
     <div class="col-6" >
       <label for="username" class="block text-900 font-medium mb-2" style="float:left;">username</label>
-      <InputText id="username" type="text" class="w-full mb-3" style="width:200px;float:left;" v-model="user.username"/>
+      <InputText id="username" type="text" class="w-full mb-3" style="width:200px;float:left;" v-model="user.username" disabled/>
       
       <label for="email" class="block text-900 font-medium mb-2" style="float:left;">email</label>
-      <InputText id="email" type="text" class="w-full mb-3" style="width:200px;float:left;" v-model="user.email"/>
+      <InputText id="email" type="text" class="w-full mb-3" style="width:200px;float:left;" v-model="user.email" disabled/>
     </div>
     <div class="col-6">
       <FileUpload name="demo[]" mode="basic" :customUpload="true" @uploader="sendMedia" label="Changer photo"/>
       <br/>
-      <img :src="profileImg" height="200" width="200" style="border-radius: 50%;">
+      <img :src="profileImg" height="100" width="100" style="border-radius: 50%;">
     </div>
     <div class="col-3"></div>
   </div>
@@ -35,6 +44,7 @@
 import TabView from 'primevue/tabview';
 import TabPanel from 'primevue/tabpanel';
 import FileUpload from 'primevue/fileupload';
+import Avatar from 'primevue/avatar'
 
 import axios from 'axios';
 
@@ -47,6 +57,7 @@ export default {
     TabView,
     TabPanel,
     FileUpload,
+    Avatar
   },
   mounted()
   {

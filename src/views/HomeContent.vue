@@ -1,6 +1,6 @@
 <template>
 
-  <Toast/>
+ <Toast :breakpoints="{'920px': {width: '100%', right: '0', left: '0'}}"/> 
  <Dialog v-model:visible="showDialog" :style="{width:'800px'}">
    {{selectedService.attributes.Title}}
     <br/>
@@ -20,10 +20,14 @@
         <br/>
         <Calendar id="time24Fin" v-model="dateFin" :showTime="true" :showSeconds="true" />
       </div>
+
+      <div class="col-4 blog-me pt-100 pb-100">
+        <span v-if="selectedService.attributes.Price"><b>Prix:</b> {{selectedService.attributes.Price}}</span>
+      </div>
     </div>
   <template #header>
     <div>
-      <Button type="button" @click="Validation(selectedService)">Ajouter à mon emploi du temps</Button> &nbsp; <span v-if="selectedService.attributes.Price"><b>Prix:</b> {{selectedService.attributes.Price}}</span>
+      <Button type="button" @click="Validation(selectedService)">Ajouter à mon emploi du temps</Button> &nbsp; 
     </div>
   </template>
 </Dialog>
