@@ -69,7 +69,7 @@ export default {
             request.setRequestHeader('content-type', 'text/plain')
             request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt)
         },
-        url: 'http://localhost:8010/api/services/'+ref.id,
+        url: window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/services/'+ref.id,
         success: function(msg) {
             console.log(msg)
             if(msg.data.attributes)
@@ -90,7 +90,7 @@ export default {
             request.setRequestHeader('content-type', 'text/plain')
             request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt)
         },
-        url: 'http://localhost:8010/api/assetUpload/GetEventPics/'+ref.id,
+        url: window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/assetUpload/GetEventPics/'+ref.id,
         success: function(msg) {
                 debugger;
                 console.log(msg)

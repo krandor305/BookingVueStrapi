@@ -124,16 +124,16 @@
 			},
 			loadBookings(){
 				var ref = this;
-				$.ajax("http://localhost:8010/api/services").then(function(d){
+				$.ajax(window.GLOBALVARS.VUE_APP_BACKENDURL+"/api/services").then(function(d){
 					ref.services = d.data
-					$.ajax({url:'http://localhost:8010/api/bookings'
+					$.ajax({url:window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/bookings'
 							,beforeSend: function(request) {
 								request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt);
 							},
 						}).then(function(bookings){
 							console.log(bookings)
 							
-							$.ajax({url:'http://localhost:8010/api/service-bookings'
+							$.ajax({url:window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/service-bookings'
 								,beforeSend: function(request) {
 									request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt);
 								},

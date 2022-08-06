@@ -82,7 +82,7 @@ router.beforeEach((to, from, next) => {
         request.setRequestHeader('content-type', 'text/plain')
         request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt)
       },
-      url: "http://localhost:8010/api/users/me",
+      url: window.GLOBALVARS.VUE_APP_BACKENDURL+"/api/users/me",
       success: function(msg) {
         console.log(msg)
         if (msg) next()

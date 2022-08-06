@@ -112,7 +112,7 @@ export default {
   mounted()
   {
     var ref = this
-    $.ajax("http://localhost:8010/api/services").then(function(d){
+    $.ajax(window.GLOBALVARS.VUE_APP_BACKENDURL+"/api/services").then(function(d){
       ref.baseElements = d.data
       ref.searchElements = d.data
     })
@@ -219,7 +219,7 @@ export default {
           }
         }
 
-      axios.post('http://localhost:8010/api/bookings',body,{
+      axios.post(window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/bookings',body,{
         headers:{
           'content-type': 'text/plain',
           "Authorization": "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt
@@ -227,7 +227,7 @@ export default {
       }).then(function(msg){
         console.log(msg)
         debugger;
-        axios.post('http://localhost:8010/api/service-bookings',{
+        axios.post(window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/service-bookings',{
           data:{
             serviceId:service.id,
             BookingId:msg.data.id,

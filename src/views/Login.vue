@@ -61,7 +61,7 @@ export default {
       if(this.username && this.password)
       {
          
-        $.post('http://localhost:8010/api/auth/local', {
+        $.post(window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/auth/local', {
         identifier: this.username,
         password: this.password,
         }, 

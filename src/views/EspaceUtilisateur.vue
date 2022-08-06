@@ -68,7 +68,7 @@ export default {
         request.setRequestHeader('content-type', 'text/plain')
         request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt)
       },
-      url: 'http://localhost:8010/api/assetUpload/GetUserProfilePic/'+ref.user.id,
+      url: window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/assetUpload/GetUserProfilePic/'+ref.user.id,
       success: function(msg) {
         debugger;
         console.log(msg)
@@ -120,7 +120,7 @@ export default {
         }}
       }
 
-      var result = await axios.post('http://localhost:8010/api/assetUpload/UploadUserProfilePic',body,{
+      var result = await axios.post(window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/assetUpload/UploadUserProfilePic',body,{
         headers:{
           'content-type': 'text/plain',
           "Authorization": "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt

@@ -44,7 +44,7 @@ for(var i=2;i<32;i++)
 
 in strapi to add:
 
-$.ajax({url:'http://localhost:8010/api/services',method: "POST"
+$.ajax({url:window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/services',method: "POST"
 							,beforeSend: function(request) {
 								request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt);
 							},

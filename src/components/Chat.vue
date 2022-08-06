@@ -74,7 +74,7 @@ export default {
         request.setRequestHeader('content-type', 'text/plain')
         request.setRequestHeader("Authorization", "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt)
       },
-      url: 'http://localhost:8010/api/messageGetByService/'+ref.id,
+      url: window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/messageGetByService/'+ref.id,
       success: function(msg) {
         debugger;
         console.log(msg)
