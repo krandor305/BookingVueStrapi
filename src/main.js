@@ -24,6 +24,9 @@ import Calendar from 'primevue/calendar';
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
 
+require("dotenv").config()
+
+console.log(process.env.VUE_APP_BACKENDURL)
 window.GLOBALVARS = process.env
 window.$ = jquery
 
