@@ -1,4 +1,5 @@
 <template>
+<Toast :breakpoints="{'920px': {width: '100%', right: '0', left: '0'}}"/>
 <br/>
  <div class="flex card-container blue-container overflow-hidden" style="padding:10px">
     <div class="flex-none flex align-items-center justify-content-center"></div>
@@ -6,9 +7,9 @@
       <div class="surface-card p-4 shadow-2 border-round w-full lg:w-6">
     <div class="text-center mb-5">
             <img src='~@/assets/logo.png' alt="Image" height="50" class="mb-3">
-            <div class="text-900 text-3xl font-medium mb-3">Welcome Back</div>
-            <span class="text-600 font-medium line-height-3">Don't have an account?</span>
-            <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" @click="$router.push('/Register')">Create today!</a>
+            <div class="text-900 text-3xl font-medium mb-3">Bienvenue</div>
+            <!-- <span class="text-600 font-medium line-height-3">Vous n'etes pas inscrits</span>
+            <a class="font-medium no-underline ml-2 text-blue-500 cursor-pointer" @click="$router.push('/Register')">Inscription</a> -->
         </div>
 
         <div>
@@ -19,11 +20,11 @@
             <InputText id="password1" type="password" class="w-full mb-3" v-model="password"/>
 
             <div class="flex align-items-center justify-content-between mb-6">
-                <div class="flex align-items-center">
+                <!-- <div class="flex align-items-center">
                     <Checkbox id="rememberme1" :binary="true" v-model="checked" class="mr-2"></Checkbox>
                     <label for="rememberme1">Remember me</label>
-                </div>
-                <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a>
+                </div> -->
+                <!-- <a class="font-medium no-underline ml-2 text-blue-500 text-right cursor-pointer">Forgot password?</a> -->
             </div>
 
             <Button label="Sign In" icon="pi pi-user" class="w-full" @click="Login"></Button>
@@ -67,8 +68,12 @@ export default {
         }, 
             function(returnedData){
                 console.log(returnedData);
+                ref.$toast.add({severity:'success', summary: 'Succés'});
                 localStorage.setItem("userinfo",JSON.stringify(returnedData))
                 ref.$router.push('/')
+        }).fail(function(xhr, status, error) {
+         ref.$toast.add({severity:'error', summary: 'Identifiants erronés'});
+        //  ref.message = "username ou password incorrect"
         });
       }
     }
