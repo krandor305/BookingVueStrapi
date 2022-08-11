@@ -5,6 +5,7 @@ import Register from '../views/Register'
 import ValidateMail from '../views/ValidateMail'
 import EspaceUtilisateur from '../views/EspaceUtilisateur'
 import ServiceDetails from '../views/ServiceDetails'
+import DatingService from '../views/ServiceViews/DatingService'
 import Scheduler from '../views/Scheduler'
 import Chat from '../components/Chat'
 
@@ -33,6 +34,12 @@ const routes = [
     path: '/ServiceDetails/:id',
     name: 'ServiceDetails',
     component: ServiceDetails,
+    props:true
+  },
+  {
+    path: '/DatingService/:id',
+    name: 'DatingService',
+    component: DatingService,
     props:true
   },
   {
