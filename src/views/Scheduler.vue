@@ -1,6 +1,7 @@
 <template>
 	<div id="app">
 		<!-- {{bookings}} -->
+		<!-- {{bookings}} -->
 		<!-- <h1>My Calendar</h1>
 		   <div id="menu" style="padding:20px">
 				<Button icon="pi pi-arrow-left" class="p-button-rounded p-button-secondary" label="previous" @click="previousMonth"/>
@@ -140,7 +141,25 @@
 							}).then(function(serviceBookings){
 								console.log(serviceBookings)
 
-								ref.bookings=serviceBookings.map(function(d){
+								if(serviceBookings.length>0)
+								{
+									var arrServices = [serviceBookings[0]]
+									serviceBookings.forEach(function(d){
+										var elem = arrServices.findIndex(function(f){
+											return f.id == d.id
+										})
+										if(elem==-1)
+										{
+											arrServices.push(d)
+										}
+									})
+									debugger;
+									serviceBookings = arrServices
+								}
+								
+
+								ref.bookings=arrServices
+								.map(function(d){
 									var obj = bookings.find(function(booking){
 										return booking.id == parseInt(d.BookingId)
 									})
