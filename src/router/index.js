@@ -7,6 +7,7 @@ import EspaceUtilisateur from '../views/EspaceUtilisateur'
 import ServiceDetails from '../views/ServiceDetails'
 import DatingService from '../views/ServiceViews/DatingService'
 import Scheduler from '../views/Scheduler'
+import ContentFeed from '../views/ContentFeed'
 import Chat from '../components/Chat'
 
 const routes = [
@@ -51,6 +52,11 @@ const routes = [
     path: '/ValidateMail',
     name: 'ValidateMail',
     component: ValidateMail
+  },
+  {
+    path: '/ContentFeed',
+    name: 'ContentFeed',
+    component: ContentFeed
   },
   {
     path: '/Chat/:id',

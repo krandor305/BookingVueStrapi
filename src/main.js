@@ -8,6 +8,7 @@ import 'primevue/resources/primevue.min.css'
 import 'primevue/resources/themes/bootstrap4-light-blue/theme.css'
 import 'primeicons/primeicons.css'
 import jquery from 'jquery'
+import Vuex from 'vuex'
 
 import DataTable from 'primevue/datatable';
 import Column from 'primevue/column';
@@ -23,6 +24,8 @@ import Dialog from 'primevue/dialog';
 import Calendar from 'primevue/calendar';
 import ToastService from 'primevue/toastservice';
 import Toast from 'primevue/toast';
+
+// import 'vueditor/dist/style/vueditor.min.css'
 
 require("dotenv").config()
 

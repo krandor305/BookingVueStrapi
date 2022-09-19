@@ -32,6 +32,7 @@ export default {
         return {
             items:[
             {label:'Accueil',icon:'pi pi-fw pi-home',name:"Accueil",to:"/"},
+            {label:"Fil d'actualité",icon:'pi pi-fw pi-calendar',name:"feed",to:"/ContentFeed"},
             {label:'Mes évenements',icon:'pi pi-fw pi-calendar',name:"Scheduler",to:"/Scheduler"},
             // {label:'Espace utilisateur',icon:'pi pi-fw pi-sitemap',name:"EspaceUtilisateur",to:"/EspaceUtilisateur"}
             ]
