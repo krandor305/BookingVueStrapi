@@ -29,7 +29,7 @@
     <div class="chat-messages">
        
        <div>
-       <div v-for="Message in messageList" class="message-box-holder" style="float:right">
+       <div v-for="Message in messageList" class="message-box-holder" style="float:right" :key="messageList.length">
         <div class="message-box" v-if="Message.UserId == UserId">
           {{Message.Content}}
         </div>
@@ -47,8 +47,8 @@
     </div>
     
     <div class="chat-input-holder">
-      <textarea class="chat-input"></textarea>
-      <input type="submit" value="Send" class="message-send" />
+      <textarea class="chat-input" id="chatInput" v-on:keyup.enter="sendMessage" :value="textToSend"></textarea>
+      <input type="submit" value="Send" class="message-send" @click="sendMessage"/>
     </div>
     
   </div>
@@ -56,18 +56,21 @@
 </template>
 
 <script>
+import axios from 'axios';
 export default {
   name: 'app',
-  props:['id'],
+  props:['id','serviceId'],
   data() {
     return {
       UserId:JSON.parse(localStorage.userinfo).user.id,
       messageList: [], 
+      textToSend:''
     }
   },
   mounted()
   {
     var ref = this;
+    debugger;
     $.ajax({
       type: "Get",
       beforeSend: function(request) {
@@ -82,6 +85,7 @@ export default {
         if(msg.length>0)
         { 
           ref.messageList = msg
+          $('.chat-messages').animate({scrollTop:1000},'50');
         }
        
       },
@@ -93,15 +97,31 @@ export default {
   },
   emits:['closeChat'],
   methods: {
-    sendMessage (text) {
-      if (text.length > 0) {
-        this.newMessagesCount = this.isChatOpen ? this.newMessagesCount : this.newMessagesCount + 1
-        this.onMessageWasSent({ author: 'support', type: 'text', data: { text } })
-      }
-    },
     onMessageWasSent (message) {
       // called when the user sends a message
       this.messageList = [ ...this.messageList, message ]
+    },
+    sendMessage()
+    {
+      var ref = this;
+      axios.post(window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/messages',{
+          data:{
+            "Content": $('#chatInput').val(),
+            "ServiceId": this.id,
+            "UserId": this.UserId
+          }
+        },{
+        headers:{
+            'content-type': 'text/plain',
+            "Authorization": "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt
+            }
+          }).then(function(msg){
+            console.log(msg)
+            ref.messageList.push({Content:$('#chatInput').val(),UserId:ref.UserId})
+            //alert("toast<success>")
+            $('#chatInput').val('')
+            $('.chat-messages').animate({scrollTop:1000},'50');
+          })
     },
     openChat () {
       // called when the user clicks on the fab button to open the chat

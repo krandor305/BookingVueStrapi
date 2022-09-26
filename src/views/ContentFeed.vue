@@ -10,6 +10,8 @@
   </template>
   </Dialog>
 
+  <Button @click="showDialog=true" icon="pi pi-plus" class="p-button-rounded p-button-success" style="position:fixed;right:0;margin-top:5px;margin-right:5px"/>
+
   <div v-for="i in [1,2,3,4,5]" key="i" style="padding:10px">
     <br/>
     <Panel>
@@ -133,6 +135,7 @@ export default {
   data() {
         return {
           dataPublish:"",
+          showDialog:false,
            events: [
                 {status: 'Commentaire Lorem ipsum', date: '15/10/2020 10:30', icon: 'pi pi-shopping-cart', color: '#9C27B0', image: 'game-controller.jpg'},
                 {status: 'Commentaire Lorem ipsum Lorem ipsum Lorem ipsum', date: '15/10/2020 14:00', icon: 'pi pi-cog', color: '#673AB7'},
