@@ -39,6 +39,8 @@
 import Checkbox from 'primevue/checkbox';
 import InputText from 'primevue/inputtext';
 import Button from 'primevue/button';
+import PocketBase from 'pocketbase';
+
 
 export default {
   name: 'Home',
@@ -54,30 +56,50 @@ export default {
         }
     },
   methods:{
-     Login(){
+     async Login(){
       var ref = this;
       //0-add components in root + service
       //1-verifications username and password required
       //2- 
       if(this.username && this.password)
       {
-         
-        $.post(window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/auth/local', {
-        identifier: this.username,
-        password: this.password,
-        }, 
-            function(returnedData){
-                console.log(returnedData);
-                ref.$toast.add({severity:'success', summary: 'Succés'});
-                localStorage.setItem("userinfo",JSON.stringify(returnedData))
-                ref.$router.push('/')
-        }).fail(function(xhr, status, error) {
-         ref.$toast.add({severity:'error', summary: 'Identifiants erronés'});
-        //  ref.message = "username ou password incorrect"
+        debugger;
+        const client = new PocketBase(window.GLOBALVARS.VUE_APP_BACKENDURL);
+
+        client.users.authViaEmail(this.username, this.password).then(function(returnedData){
+          console.log(returnedData);
+          // ref.$store.commit('setItem',client)
+          ref.$toast.add({severity:'success', summary: 'Succés'});
+          localStorage.setItem("userinfo","true")
+          localStorage.setItem("username",ref.username)
+          localStorage.setItem("password",ref.password)
+          ref.$router.push('/')
+        }).catch(function(d){
+          ref.$toast.add({severity:'error', summary: 'Identifiants erronés'});
         });
+
+        debugger;
+        
+
+        //ref.$toast.add({severity:'error', summary: 'Identifiants erronés'});
+         
+
       }
-    }
+    },
+    getCircularReplacer()  {
+      var seen = new WeakSet();
+      return (key, value) => {
+        if (typeof value === "object" && value !== null) {
+          if (seen.has(value)) {
+            return;
+          }
+          seen.add(value);
+        }
+        return value;
+      };
   }
+  },
+  
 }
 
 </script>

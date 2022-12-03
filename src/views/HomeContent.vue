@@ -2,9 +2,9 @@
 
  <Toast :breakpoints="{'920px': {width: '100%', right: '0', left: '0'}}"/> 
  <Dialog v-model:visible="showDialog" :style="{width:'800px'}">
-   {{selectedService.attributes.Title}}
+   {{selectedService.title}}
     <br/>
-   {{selectedService.attributes.ActualDescription}}
+   {{selectedService.actualdescription}}
     <br/>
     <br/>
     <div class="grid">
@@ -22,7 +22,7 @@
       </div>
 
       <div class="col-4 blog-me pt-100 pb-100">
-        <span v-if="selectedService.attributes.Price"><b>Prix:</b> {{selectedService.attributes.Price}}</span>
+        <span v-if="selectedService.price"><b>Prix:</b> {{selectedService.price}}</span>
       </div>
     </div>
   <template #header>
@@ -48,19 +48,19 @@
                      <div class="blog-img">
                         <img src="http://infinityflamesoft.com/html/abal-preview/assets/img/blog/blog1.jpg" alt="">
                         <div class="post-category">
-                           <a href="#">{{elem.attributes.Type}}</a>
+                           <a href="#">{{elem.type}}</a>
                         </div>
                      </div>
                      <div class="blog-content">
                         <div class="blog-title">
-                           <h4><a href="#">{{elem.attributes.Title}}</a></h4>
+                           <h4><a href="#">{{elem.title}}</a></h4>
                            <div class="meta">
                               <ul>
-                                 <li>{{new Date(elem.attributes.DateDebut).toLocaleDateString()}} {{new Date(elem.attributes.DateDebut).getHours()}}:{{new Date(elem.attributes.DateDebut).getMinutes()}} - {{new Date(elem.attributes.DateFin).toLocaleDateString()}} {{new Date(elem.attributes.DateFin).getHours()}}:{{new Date(elem.attributes.DateFin).getMinutes()}}</li>
+                                 <li>{{new Date(elem.datedebut).toLocaleDateString()}} {{new Date(elem.datefin).getHours()}}:{{new Date(elem.datefin).getMinutes()}} - {{new Date(elem.datefin).toLocaleDateString()}} {{new Date(elem.datefin).getHours()}}:{{new Date(elem.datefin).getMinutes()}}</li>
                               </ul>
                            </div>
                         </div>
-                        <p>{{elem.attributes.Description}}</p>
+                        <p>{{elem.description}}</p>
                         <a href="#" class="box_btn" @click="openReservation(elem)">lire plus</a>
                      </div>
                   </div>
@@ -80,6 +80,10 @@ import DataView from 'primevue/dataview';
 import Button from 'primevue/button';
 import Card from 'primevue/card';
 import axios from 'axios';
+
+import PocketBase from 'pocketbase';
+
+// fetch a paginated records list
 
 export default {
   name: 'Home',
@@ -109,13 +113,31 @@ export default {
       }
     }
   },
-  mounted()
+  async mounted()
   {
     var ref = this
-    $.ajax(window.GLOBALVARS.VUE_APP_BACKENDURL+"/api/services").then(function(d){
-      ref.baseElements = d.data
-      ref.searchElements = d.data
-    })
+    const client = new PocketBase(window.GLOBALVARS.VUE_APP_BACKENDURL);
+    this.currentUser = await client.users.authViaEmail(localStorage.getItem("username"), localStorage.getItem("password"))
+    this.user = client;
+
+    var d = new Date(d);
+    var day = d.getDay(),
+    diff = d.getDate() - day + (day == 0 ? -6:1); // adjust when day is sunday
+    
+
+    d = (new Date(d.setDate(diff))).toLocaleString().replaceAll("/","-").replaceAll(",","").replaceAll("AM","").replaceAll("PM","");
+    
+    // client.records.getList('services', 1, 50, {
+    //     filter: 'datedebut >= "'+d+'"',
+    // })
+
+    debugger;
+    client.records.getList('service', 1, 50, {
+    }).then(function(d){
+      ref.baseElements = d.items
+      ref.searchElements = d.items
+    });
+
   },
   computed:
   {
@@ -156,6 +178,8 @@ export default {
   },
   data() {
         return {
+          user:null,
+          currentUser:null,
           selectedTypes: {name: 'Tout', code: ''},
           Types: [
             {name: 'Tout', code: ''},
@@ -203,48 +227,17 @@ export default {
     {
       window.scrollTo(0,0)
     },
-    Validation(service)
+    async Validation(service)
     {
       var ref=this;
       this.showDialog = false
+      
+      console.log(service)
       debugger;
-      var body = {
-          data:{
-            UserId:1,
-            OutcomeId:1,
-            StatusId:1,
-            Travel_Agency_Id:1,
-            Booking_Date:new Date(),
-            Booking_Details:"",
-          }
-        }
-
-      axios.post(window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/bookings',body,{
-        headers:{
-          'content-type': 'text/plain',
-          "Authorization": "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt
-          }
-      }).then(function(msg){
-        console.log(msg)
-        debugger;
-        axios.post(window.GLOBALVARS.VUE_APP_BACKENDURL+'/api/service-bookings',{
-          data:{
-            serviceId:service.id,
-            BookingId:msg.data.id,
-            startDate:ref.dateDebut,
-            endDate:ref.dateFin,
-          }
-        },{
-        headers:{
-            'content-type': 'text/plain',
-            "Authorization": "Bearer "+JSON.parse(localStorage.getItem("userinfo")).jwt
-            }
-          }).then(function(msg){
-            console.log(msg)
-            //alert("toast<success>")
-            ref.$toast.add({severity:'success', summary: 'Réservation envoyée'});
-          })
-      })
+      await client.records.create('booking', {
+        userid:this.currentUser.user.id,
+        serviceid:service.id
+      });
 
     }
   }
